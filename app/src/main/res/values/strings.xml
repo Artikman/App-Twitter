@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Tweet</string>
+    <string name="email">Email:</string>
+    <string name="message">Message:</string>
+    <string name="send">Send</string>
+    <string name="twitter">Add Tweet</string>
+    <string name="show_twitters">Show Tweets</string>
+    <string name="bonczek">@bonczek</string>
+    <string name="main">Main</string>
+    <string name="create">Create</string>
+    <string name="timeline">TimeLine</string>
+    <string name="setting">Setting</string>
+    <string name="show_http_post">Show HTTP POST</string>
+    <string name="show_http_get">Show HTTP GET</string>
+</resources>

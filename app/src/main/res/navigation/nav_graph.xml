@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.example.twitter.ui.main.MainFragment"
+        android:label="@string/main" >
+        <action
+            android:id="@+id/action_mainFragment_to_createTweetFragment"
+            app:destination="@id/createTweetFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"/>
+        <action
+            android:id="@+id/action_mainFragment_to_allTweetFragment"
+            app:destination="@id/allTweetFragment"
+            app:popEnterAnim="@anim/zoom_in"
+            app:popExitAnim="@anim/zoom_out"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+        <action
+            android:id="@+id/action_mainFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createTweetFragment"
+        android:name="com.example.twitter.ui.create.CreateTweetFragment"
+        android:label="@string/create" >
+        <action
+            android:id="@+id/action_createTweetFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+        <action
+            android:id="@+id/action_createTweetFragment_to_allTweetFragment"
+            app:destination="@id/allTweetFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/allTweetFragment"
+        android:name="com.example.twitter.ui.home.HomeTimelineFragment"
+        android:label="@string/timeline" >
+        <argument
+            android:name="name"
+            app:argType="string"
+            android:defaultValue="null" />
+        <argument
+            android:name="message"
+            app:argType="string"
+            android:defaultValue="null"/>
+        <action
+            android:id="@+id/action_allTweetFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+        <action
+            android:id="@+id/action_allTweetFragment_to_createTweetFragment"
+            app:destination="@id/createTweetFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.example.twitter.ui.setting.SettingFragment"
+        android:label="@string/setting"/>
+</navigation>
