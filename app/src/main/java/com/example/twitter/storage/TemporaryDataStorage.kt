@@ -1,33 +1,51 @@
 package com.example.twitter.storage
 
-import com.example.twitter.model.TweetItem
+import androidx.lifecycle.MutableLiveData
+import com.example.twitter.model.TweetItemPayLoad
+import com.example.twitter.service.TweetServiceApi
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import javax.inject.Inject
 
-object TemporaryDataStorage: Crud<TweetItem>  {
+class TemporaryDataStorage @Inject constructor(private val twitter: TweetServiceApi) : Repository {
 
-    var twitterCollection: MutableList<TweetItem> = mutableListOf()
+    override fun create(message: String): MutableLiveData<Boolean> {
+        val request = MutableLiveData(false)
+        twitter
+            .postTimeLine(message)
+            .enqueue(object : Callback<TweetItemPayLoad> {
+                override fun onFailure(call: Call<TweetItemPayLoad>, t: Throwable) {
+                    println("Failed to execute request")
+                }
 
-    override fun create(tweetItem: TweetItem) {
-        twitterCollection.add(0, tweetItem)
+                override fun onResponse(call: Call<TweetItemPayLoad>, response: Response<TweetItemPayLoad>) {
+                    val tweet = response.body()
+                    println("Call result: $tweet")
+                    request.value = true
+                }
+
+            })
+        return request
     }
 
-    override fun read() : MutableList<TweetItem> {
-        return twitterCollection
-    }
+    override fun update(): MutableLiveData<List<TweetItemPayLoad>> {
+        val tweetsLiveData = MutableLiveData<List<TweetItemPayLoad>>()
+        twitter
+            .getTimeLine()
+            .enqueue(object : Callback<List<TweetItemPayLoad>> {
+                override fun onFailure(call: Call<List<TweetItemPayLoad>>, t: Throwable) {
+                    println("Failed to execute request")
+                }
 
-    override fun update(tweetItem: TweetItem, index: Int) {
-        if(index < twitterCollection.size) {
-            twitterCollection.removeAt(index)
-            twitterCollection.add(index, tweetItem)
-        }
-    }
-
-    override fun delete(index: Int) {
-       if(index < twitterCollection.size) {
-           twitterCollection.removeAt(index)
-       }
-    }
-
-    fun newTweet(name: String, message: String): TweetItem {
-        return TweetItem(name = name, message = message)
+                override fun onResponse(call: Call<List<TweetItemPayLoad>>, response: Response<List<TweetItemPayLoad>>) {
+                    val tweets = response.body()
+                    if (tweets != null) {
+                        tweetsLiveData.value = tweets
+                        println("Call result: $tweets")
+                    }
+                }
+            })
+        return tweetsLiveData
     }
 }
